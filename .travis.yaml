@@ -1,0 +1,17 @@
+language: jave
+jdk:
+     -openjdk8
+     
+     
+cache: 
+        - "$HOME/ .cache"
+
+
+jobs: 
+      -stage: deploy
+       name: 'Deploy To Dev Environment'
+       script: 
+         - mvn clean install
+         - cp .travis.setings.xml $HOME/.m2/settings.xml
+         - mvn deploy -DmuleDeploy -Dserver=$server -Dworkers=$workers -DworkerType=$workerType -Denvironment=$environment -DmuleVersion=$muleVersion -DappName=appName
+         if: branch = dev
